@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SSS.DataFormManager.Models
+﻿namespace SSS.DataFormManager.Models
 {
-    class DataFormListBox
+    internal class DataFormListBox
     {
     }
 }

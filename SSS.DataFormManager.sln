@@ -9,6 +9,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{90BC3507-BC7B-4317-832B-101E60BAA6E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSS.EncryptionManagementService", "SSS.CryptoGrapher\SSS.EncryptionManagementService.csproj", "{9C0C7089-73AD-42C9-9C4F-86881B36DEE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSS.GoogleDriveCloudService", "SSS.GoogleDriveCloudManagement\SSS.GoogleDriveCloudService.csproj", "{ECE3103A-5D6D-4197-A67C-F75828623262}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSS.ArchiveManagementService", "SSS.ArchiveManagementService\SSS.ArchiveManagementService.csproj", "{19EFC710-848D-4DC4-A7E9-4280ABF69516}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSS.FileManagementService", "SSS.FileManagementService\SSS.FileManagementService.csproj", "{C7BE4100-F2E6-43A3-BB3C-5F8D09962A98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSS.SerializationManagementService", "SSS.SerializationManagementService\SSS.SerializationManagementService.csproj", "{28F3496D-29E8-417B-B9A9-A94048124E95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +37,26 @@ Global
 		{90BC3507-BC7B-4317-832B-101E60BAA6E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90BC3507-BC7B-4317-832B-101E60BAA6E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90BC3507-BC7B-4317-832B-101E60BAA6E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0C7089-73AD-42C9-9C4F-86881B36DEE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0C7089-73AD-42C9-9C4F-86881B36DEE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0C7089-73AD-42C9-9C4F-86881B36DEE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0C7089-73AD-42C9-9C4F-86881B36DEE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECE3103A-5D6D-4197-A67C-F75828623262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECE3103A-5D6D-4197-A67C-F75828623262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECE3103A-5D6D-4197-A67C-F75828623262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECE3103A-5D6D-4197-A67C-F75828623262}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19EFC710-848D-4DC4-A7E9-4280ABF69516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19EFC710-848D-4DC4-A7E9-4280ABF69516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19EFC710-848D-4DC4-A7E9-4280ABF69516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19EFC710-848D-4DC4-A7E9-4280ABF69516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7BE4100-F2E6-43A3-BB3C-5F8D09962A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7BE4100-F2E6-43A3-BB3C-5F8D09962A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7BE4100-F2E6-43A3-BB3C-5F8D09962A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7BE4100-F2E6-43A3-BB3C-5F8D09962A98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28F3496D-29E8-417B-B9A9-A94048124E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28F3496D-29E8-417B-B9A9-A94048124E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28F3496D-29E8-417B-B9A9-A94048124E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28F3496D-29E8-417B-B9A9-A94048124E95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

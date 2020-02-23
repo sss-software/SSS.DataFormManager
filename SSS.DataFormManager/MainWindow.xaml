@@ -9,10 +9,11 @@
         xmlns:converters="clr-namespace:SSS.DataFormManager.Views.Converters"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+         xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
         mc:Ignorable="d"
         FontFamily="Calibri"
         FontSize="11"
-        Title="MainWindow" Height="450" Width="1000" Loaded="Window_Loaded" SizeToContent="Width">
+        Title="Data Form Manager" Loaded="Window_Loaded" SizeToContent="WidthAndHeight">
     <Window.Background>
         <ImageBrush ImageSource="Images/window-background.jpg" />
     </Window.Background>
@@ -142,7 +143,7 @@
         </DataTemplate>
         <DataTemplate x:Key="TextBoxControlValueTemplate">
             <Label Margin="0"  Content="{Binding TextBoxControlValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   MinWidth="50" Height="Auto" Background="LightYellow" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                   MinWidth="50" Height="Auto"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
         </DataTemplate>
         <DataTemplate x:Key="ListBoxControlEditingTemplate">
             <ListBox ItemsSource="{Binding ListBoxItemsSource, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -154,7 +155,7 @@
         </DataTemplate>
         <DataTemplate x:Key="ListBoxControlValueTemplate">
             <Label Content="{Binding ListBoxControlValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   Margin="0" MinWidth="50" Height="Auto" Background="LightYellow" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                   Margin="0" MinWidth="50" Height="Auto"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
         </DataTemplate>
         <DataTemplate x:Key="ComboBoxControlEditingTemplate">
             <ComboBox ItemsSource="{Binding ComobBoxItemsSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -176,17 +177,32 @@
         </DataTemplate>
 
         <DataTemplate x:Key="TextBlockControlViewTemplate">
-            <Label Content="{Binding LabelValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <StackPanel Orientation="Vertical">
+                <Label Content="{Binding LabelValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        Margin="0" MinWidth="50" VerticalAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Right" FontWeight="Bold" />
+                <Line Stroke="DarkSlateGray" HorizontalAlignment="Stretch" Margin="0, 0, 0, 1" VerticalAlignment="Bottom"
+                              X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                              StrokeDashArray="1 1" StrokeThickness="1" />
+            </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="LabelControlViewTemplate">
-            <Label Content="{Binding LabelValue, UpdateSourceTrigger=PropertyChanged}"
-                    Margin="0" MinWidth="50" VerticalAlignment="Stretch" HorizontalAlignment="Right" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
+            <StackPanel Orientation="Vertical">
+                <Label Content="{Binding LabelValue, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="0" MinWidth="50" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Right" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Background="Transparent" />
+                <Line Stroke="DarkSlateGray" HorizontalAlignment="Stretch" Margin="0, 0, 0, 1" VerticalAlignment="Bottom"
+                              X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                              StrokeDashArray="1 1" StrokeThickness="1" />
+            </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="TextBoxControlValueViewerTemplate">
-            <Label Content="{Binding TextBoxControlValue, UpdateSourceTrigger=PropertyChanged}"
-                   Margin="0" MinWidth="50" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+            <StackPanel Orientation="Vertical">
+                <Label Content="{Binding TextBoxControlValue, UpdateSourceTrigger=PropertyChanged}"
+                   Margin="0" MinWidth="50" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Background="Transparent" />
+                <Line Stroke="DarkSlateGray" HorizontalAlignment="Stretch" Margin="0, 0, 0, 1" VerticalAlignment="Bottom"
+                              X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                              StrokeDashArray="1 1" StrokeThickness="1" />
+            </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="ListBoxControlValueViewerTemplate">
@@ -204,7 +220,7 @@
                    Margin="0"  MinWidth="50" Height="Auto" Background="LightYellow" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
         </DataTemplate>
 
-        <Style TargetType="{x:Type DataGridRow}">
+        <Style  x:Key="DataGridRowStyle" TargetType="{x:Type DataGridRow}">
             <Style.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
@@ -212,409 +228,466 @@
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
             </Style.Resources>
         </Style>
+
+        <Style TargetType="DataGridCell">
+            <Style.Setters>
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Margin" Value="2,0,0,0" />
+                <Setter Property="BorderThickness" Value="0" />
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="BorderBrush" Value="DodgerBlue"></Setter>
+                    <Setter Property="BorderThickness" Value="2"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Style.Setters>
+                <Setter Property="MinWidth" Value="100"></Setter>
+                <Setter Property="FontWeight" Value="Bold"></Setter>
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="Margin" Value="0, 2, 1, 2" />
+            </Style.Setters>
+        </Style>
+        <converters:ObjectTypeToNameConverter x:Key="ObjectTypeToNameConverter" />
+        <converters:NewItemTypesComboBoxConverter x:Key="NewItemTypesComboBoxConverter" />
+        <converters:GuidToStringConverter x:Key="GuidToStringConverter" />
         <converters:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter" />
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
     <Grid Margin="0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.Resources>
-        </Grid.Resources>
-        <Border  Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Stretch">
-            <StackPanel>
-                <TextBlock Text="Data Form Designer" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"></TextBlock>
-                <Border Height="1" Width="Auto" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="2"></Border>
-            </StackPanel>
-        </Border>
-        <!--Start of Data Form Designer-->
-        <Grid Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" Margin="15, 0, 15, 0">
+        <Grid Grid.Row="0" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="15, 0, 15, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="45"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <DataGrid x:Name="dgDataFormTemplateDesigner"  Margin="10" VerticalAlignment="Top" HorizontalAlignment="Center"
-                  CanUserDeleteRows="True"
-                  SelectionUnit="FullRow"
-                  SelectionMode="Single"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  AlternatingRowBackground="Ivory"
-                  GridLinesVisibility="Horizontal"
-                  VerticalScrollBarVisibility="Auto"
-                  HorizontalScrollBarVisibility="Auto"
-                  LoadingRow="DgDataFormTemplateDesigner_LoadingRow"
-                  DataGridCell.Selected="DgDataFormTemplateDesigner_Selected"
-                  Loaded="DgDataFormTemplateDesigner_Loaded"
+            <Border Grid.Row="0" Grid.ColumnSpan="4" BorderBrush="Gray" BorderThickness="0.5, 0.5, 0.5, 0.5" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Label Content="DATA FORM DESIGNER" HorizontalContentAlignment="Center" FontSize="20" Margin="0" FontWeight="Bold"></Label>
+            </Border>
+            <Label Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="4" Content="{Binding DataFormTitle}" HorizontalContentAlignment="Center" FontSize="16" Margin="0" FontWeight="Bold"></Label>
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  Height="1" Width="Auto" BorderBrush="Gray" BorderThickness="0,1,1,0" Margin="0, 1, 0, 5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+            <Border Grid.Row="2" Grid.ColumnSpan="4" BorderBrush="Gray" BorderThickness="0.5, 0.5, 0.5, 0.5" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid Margin="10, 0, 10, 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="4" Text="Form Header" FontSize="12" Margin="5" Foreground="SlateGray" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
+                    <Border Grid.Row="0"  Grid.ColumnSpan="4" Height="0.5" Width="Auto" BorderBrush="Gray" BorderThickness="0,1,1,0" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+
+                    <!-- Headers -->
+                    <Border Grid.Row="1" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="1">
+                        <TextBlock Text="Form Type" HorizontalAlignment="Right" Margin="10,0,10,0" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="1">
+                        <TextBlock  Text="Form Title" HorizontalAlignment="Right" Margin="10,0,10,0"  FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="2" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="1">
+                        <TextBlock Text="Display Header" HorizontalAlignment="Right" Margin="10,0,10,0" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                    </Border>
+
+                    <Border Grid.Row="3" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="1">
+                        <TextBlock Text="Description" HorizontalAlignment="Right" Margin="10,0,10,0"  FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                    </Border>
+                    <Border Grid.Row="4" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="1">
+                        <TextBlock Text="Category" HorizontalAlignment="Right" Margin="10,0,10,0"  FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                    </Border>
+                    <Border Grid.Row="4" Grid.Column="2" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="1">
+                        <TextBlock Text="Sub-category" HorizontalAlignment="Right" Margin="10,0,10,0"  FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                    </Border>
+                    <Border Grid.Row="5" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="1">
+                        <TextBlock Text="Captured By" HorizontalAlignment="Right" Margin="10,0,10,0"  FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                    </Border>
+
+                    <!-- Values -->
+                    <ComboBox Text="" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="5, 1, 0, 0" Width="150" Height="20"
+                             HorizontalContentAlignment="Left"
+                            ItemsSource="{Binding Path=DataFormTypes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayMemberPath="FormTypeName"
+                            SelectedValuePath="FormTypeName"
+                            SelectedValue="{Binding CurrentDataFormTypeSelection.FormTypeName}"
+                            SelectedItem="{Binding CurrentDataFormTypeSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DataFormTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Margin="5, 1, 0, 0"  Width="150" Height="20"></TextBox>
+                    <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding FormDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Margin="5, 1, 12, 0" Height="20"></TextBox>
+                    <ComboBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Margin="5, 1, 0, 0" Width="150" Height="20"
+                            HorizontalContentAlignment="Left"
+                            ItemsSource="{Binding Path=DataFormCategories}"
+                            DisplayMemberPath="CategoryName"
+                            SelectedValuePath="CategoryName"
+                            SelectedValue="{Binding CurrentCategorySelection.CategoryName}"
+                            SelectedItem="{Binding CurrentCategorySelection}"></ComboBox>
+                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DataFormCapturedBy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5, 1, 0, 0" Width="150" Height="20"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding DisplayHeader, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5, 1, 0, 0" Width="150" Height="20"></TextBox>
+                    <ComboBox Text="" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Left" Margin="5, 1, 5, 0"  Width="150" Height="20"
+                             HorizontalContentAlignment="Left"
+                            ItemsSource="{Binding Path=DataFormSubCategories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayMemberPath="SubCategoryName"
+                            SelectedValuePath="SubCategoryName"
+                            SelectedValue="{Binding CurrentSubCategorySelection.SubCategoryName}"
+                            SelectedItem="{Binding CurrentSubCategorySelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+
+                    <TextBlock Grid.Row="6" Grid.ColumnSpan="4" Text="Form Body" FontSize="12" Margin="5" Foreground="SlateGray" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
+                    <Border Grid.Row="6"  Grid.ColumnSpan="4" Height="0.5" Width="Auto" BorderBrush="Gray" BorderThickness="0,1,1,0" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+
+                    <DataGrid x:Name="dgDataFormTemplateDesigner" Grid.Row="7" Grid.ColumnSpan="4"   Margin="10" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                      CanUserDeleteRows="True"
+                      SelectionUnit="FullRow"
+                      SelectionMode="Single"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      AlternatingRowBackground="Ivory"
+                      GridLinesVisibility="Horizontal"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto"
+                      LoadingRow="DgDataFormTemplateDesigner_LoadingRow"
+                      Loaded="DgDataFormTemplateDesigner_Loaded"
+
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedIndex="{Binding CurrentSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding DataFormEntries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="LoadingRow">
-                        <i:InvokeCommandAction Command="{Binding RowNumberGeneratorCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <DataGrid.InputBindings>
-                    <KeyBinding Key="Enter" Gesture="Enter"
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LoadingRow">
+                                <i:InvokeCommandAction Command="{Binding RowNumberGeneratorCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <DataGrid.InputBindings>
+                            <KeyBinding Key="Enter" Gesture="Enter"
                             Command="{Binding AddDataFormEntryCommand}"
                             CommandParameter="{Binding Path=SelectedItem, ElementName=dgDataFormTemplateDesigner,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </DataGrid.InputBindings>
-                <DataGrid.RowHeaderTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Header}" />
-                    </DataTemplate>
-                </DataGrid.RowHeaderTemplate>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn  Width="Auto">
-                        <DataGridTemplateColumn.Header>
-                            <TextBlock Text="Label Control"></TextBlock>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.HeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Style.Setters>
-                                    <Setter Property="MinWidth" Value="100"></Setter>
-                                    <Setter Property="FontWeight" Value="Bold"></Setter>
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <Setter Property="Background" Value="Silver" />
-                                    <Setter Property="BorderBrush" Value="White" />
-                                    <Setter Property="BorderThickness" Value="1" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Margin" Value="2, 2, 1, 2" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGridTemplateColumn.HeaderStyle>
-                        <DataGridTemplateColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Style.Setters>
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <Setter Property="Margin" Value="2,0,2,0" />
-                                    <Setter Property="BorderThickness" Value="0" />
-                                </Style.Setters>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="BorderBrush" Value="Black"></Setter>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTemplateColumn.CellStyle>
-                        <DataGridTemplateColumn.CellTemplate>
+                        </DataGrid.InputBindings>
+                        <DataGrid.RowHeaderTemplate>
                             <DataTemplate>
-                                <Label Margin="2, 0, 2,0"
-                                   Content="{Binding LabelControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" ></Label>
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Header}" />
                             </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <ComboBox  Margin="2, 0, 2,0"
+                        </DataGrid.RowHeaderTemplate>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn  Width="Auto">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Label Control"></TextBlock>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label Margin="0, 0, 2,0"
+                                   Content="{Binding LabelControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" VerticalAlignment="Center" ></Label>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox  Margin="2, 0, 2,0"
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
                                       ItemsSource="{Binding LabelControlOptions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedItem="{Binding LabelControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                </ComboBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn  Width="Auto">
-                        <DataGridTemplateColumn.Header>
-                            <TextBlock Text="Data Control"></TextBlock>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.HeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Style.Setters>
-                                    <Setter Property="MinWidth" Value="100"></Setter>
-                                    <Setter Property="FontWeight" Value="Bold"></Setter>
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <Setter Property="Background" Value="Silver" />
-                                    <Setter Property="BorderBrush" Value="White" />
-                                    <Setter Property="BorderThickness" Value="1" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Margin" Value="0, 2, 1, 2" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGridTemplateColumn.HeaderStyle>
-                        <DataGridTemplateColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Style.Setters>
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <Setter Property="Margin" Value="2,0,2,0" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGridTemplateColumn.CellStyle>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Label  Margin="0"
+                            <DataGridTemplateColumn  Width="Auto">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Data Control"></TextBlock>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label  Margin="0"
                                     Content="{Binding DataControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"></Label>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <ComboBox Margin="0"
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Margin="0"
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Center"
                                       HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center"
                                       IsTextSearchEnabled="True"
                                       ItemsSource="{Binding DataControlOptions}" SelectedItem="{Binding DataControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn  Width="Auto">
-                        <DataGridTemplateColumn.Header>
-                            <TextBlock Text="Control Properties"></TextBlock>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.HeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Style.Setters>
-                                    <Setter Property="FontWeight" Value="Bold"></Setter>
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <Setter Property="Background" Value="Silver" />
-                                    <Setter Property="BorderBrush" Value="White" />
-                                    <Setter Property="BorderThickness" Value="1" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Margin" Value="0, 2, 1, 2" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGridTemplateColumn.HeaderStyle>
-                        <DataGridTemplateColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Style.Setters>
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <Setter Property="Background" Value="White" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGridTemplateColumn.CellStyle>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <ToggleButton  x:Name="TogglePopupButton"
+                            <DataGridTemplateColumn  Width="Auto">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Control Properties"></TextBlock>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <ToggleButton  x:Name="TogglePopupButton"
                                         Command="{Binding Path=DataContext.PropertyCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
-                                        Width="30" Margin="0" Background="Gray"
+                                        Width="30" Margin="0"
                                         BorderThickness="0"
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Center"
                                         VerticalAlignment="Center"
-                                        VerticalContentAlignment="Center" Click="ToggleButton_Click">
-                                        <ToggleButton.Content>P</ToggleButton.Content>
-                                    </ToggleButton>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                                        VerticalContentAlignment="Center">
+                                                <ToggleButton.Content>P</ToggleButton.Content>
+                                            </ToggleButton>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn  Width="Auto">
-                        <DataGridTemplateColumn.Header>
-                            <TextBlock Text="Label Value"></TextBlock>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.HeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Style.Setters>
-                                    <Setter Property="MinWidth" Value="100"></Setter>
-                                    <Setter Property="FontWeight" Value="Bold"></Setter>
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <Setter Property="Background" Value="Silver" />
-                                    <Setter Property="BorderBrush" Value="White" />
-                                    <Setter Property="BorderThickness" Value="1" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Margin" Value="0, 2, 1, 2" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGridTemplateColumn.HeaderStyle>
-                        <DataGridTemplateColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Style.Setters>
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGridTemplateColumn.CellStyle>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Label Margin="0"
+                            <DataGridTemplateColumn  Width="Auto">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Label Value"></TextBlock>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label Margin="0"
                                    Content="{Binding LabelValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" ></Label>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplateSelector>
-                            <datatemplates:LabelValueTemplateSelector
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplateSelector>
+                                    <datatemplates:LabelValueTemplateSelector
                             TextBoxControlTemplate="{StaticResource TextBoxControlTemplate}"
                             TextBlockControlTemplate="{StaticResource TextBlockControlTemplate}" />
-                        </DataGridTemplateColumn.CellEditingTemplateSelector>
-                    </DataGridTemplateColumn>
+                                </DataGridTemplateColumn.CellEditingTemplateSelector>
+                            </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn  Width="Auto">
-                        <DataGridTemplateColumn.Header>
-                            <TextBlock Text="Control Value"></TextBlock>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.HeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Style.Setters>
-                                    <Setter Property="MinWidth" Value="100"></Setter>
-                                    <Setter Property="FontWeight" Value="Bold"></Setter>
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <Setter Property="Background" Value="Silver" />
-                                    <Setter Property="BorderBrush" Value="White" />
-                                    <Setter Property="BorderThickness" Value="1" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Margin" Value="0, 2, 1, 2" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGridTemplateColumn.HeaderStyle>
-                        <DataGridTemplateColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Style.Setters>
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                </Style.Setters>
-                            </Style>
-                        </DataGridTemplateColumn.CellStyle>
-                        <DataGridTemplateColumn.CellTemplateSelector>
-                            <datatemplates:DataFormDesignerValueTemplateSelector
+                            <DataGridTemplateColumn  Width="Auto">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="Control Value"></TextBlock>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplateSelector>
+                                    <datatemplates:DataFormDesignerValueTemplateSelector
                                 TextBoxControlValueTemplate="{StaticResource TextBoxControlValueTemplate}"
                                 ListBoxControlValueTemplate="{StaticResource ListBoxControlValueTemplate}" />
-                        </DataGridTemplateColumn.CellTemplateSelector>
-                        <DataGridTemplateColumn.CellEditingTemplateSelector>
-                            <datatemplates:DataFormDesignerEditingTemplateSelector
+                                </DataGridTemplateColumn.CellTemplateSelector>
+                                <DataGridTemplateColumn.CellEditingTemplateSelector>
+                                    <datatemplates:DataFormDesignerEditingTemplateSelector
                                 TextBoxControlEditingTemplate="{StaticResource TextBoxControlEditingTemplate}"
                                 ListBoxControlEditingTemplate="{StaticResource ListBoxControlEditingTemplate}" />
-                        </DataGridTemplateColumn.CellEditingTemplateSelector>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem x:Name="ctxMenuAddNewRow" Header="Add new entry"
+                                </DataGridTemplateColumn.CellEditingTemplateSelector>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="ctxMenuAddNewRow" Header="Add new entry"
                               Command="{Binding AddDataFormEntryCommand}"
                               CommandParameter="{Binding Path=SelectedItem, ElementName=dgDataFormTemplateDesigner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <MenuItem.Icon>
-                                <Image Source="Resources/Images/add_row_16.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem x:Name="ctxMenuRemoveExistingRow" Header="Remove selected entry"
+                                    <MenuItem.Icon>
+                                        <Image Source="Resources/Images/add_row_16.png" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem x:Name="ctxMenuRemoveExistingRow" Header="Remove selected entry"
                                   Command="{Binding RemoveDataFormEntryCommand}"
                                   CommandParameter="{Binding Path=SelectedItem, ElementName=dgDataFormTemplateDesigner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <MenuItem.Icon>
-                                <Image Source="Resources/Images/remove_row_16.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-            </DataGrid>
-            <!--End of Data Form Designer-->
-            <WrapPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Margin="0, 10, 10,0">
-                <Button x:Name="AddButton" Width="25" Height="25" Margin="1"
+                                    <MenuItem.Icon>
+                                        <Image Source="Resources/Images/remove_row_16.png" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+
+                    <Button Grid.Row="8" Grid.Column="4"  Width="24"  Height="24" Margin="15,0,15,5" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0"
+                            Command="{Binding Path=DataContext.AddAttachmentCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                            CommandParameter="{Binding Path=., RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            ToolTip="Add a file attachment (*.xlsx, *.pdf, *.txt, *.doc, *.docx)">
+                        <Button.Content>
+                            <Image Grid.Row="0" Grid.ColumnSpan="2" Source="Images/attachment3A.png"  Height="24"  Margin="0" Stretch="UniformToFill" ></Image>
+                        </Button.Content>
+                    </Button>
+
+                    <Border Grid.Row="8"  Grid.ColumnSpan="4" Height="0.5" Width="Auto" BorderBrush="Gray" BorderThickness="0,15,1,0" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="3"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" CornerRadius="10" BorderBrush="Gray" Margin="0, 2, 0, 15" BorderThickness="3">
+                <WrapPanel Grid.Row="2" HorizontalAlignment="Center" Margin="15, 2, 0, 2">
+                    <Button x:Name="AddButton"  Height="24" Width="24" Margin="1, 0, 1, 0"  BorderThickness="0" Background="Transparent"
                             Command="{Binding Path=DataContext.AddDataFormEntryCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
-                            CommandParameter="{Binding Path=DataContext.CurrentSelectedItem, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <Button.Content>
-                        +
-                    </Button.Content>
-                </Button>
-                <Button x:Name="RemoveButton" Width="25" Height="25" Margin="1"
+                            CommandParameter="{Binding Path=DataContext.CurrentSelectedItem, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            ToolTip="Add a new form entry">
+                        <Button.Content>
+                            <fa:ImageAwesome Icon="PlusCircle" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF25A20A" />
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="RemoveButton" Height="24" Width="24" Margin="1"  BorderThickness="0" Background="Transparent"
                         Command="{Binding Path=DataContext.RemoveDataFormEntryCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
-                        CommandParameter="{Binding Path=DataContext.CurrentSelectedItem, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <Button.Content>
-                        -
-                    </Button.Content>
-                </Button>
-                <Button x:Name="GenerateButton" Width="Auto" Height="25" Margin="1"
+                        CommandParameter="{Binding Path=DataContext.CurrentSelectedItem, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="Remove a form entry">
+                        <Button.Content>
+                            <fa:ImageAwesome Icon="MinusCircle" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FFDE1805" />
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="GenerateButton" Height="24" Width="24"  Margin="1" BorderThickness="0" Background="Transparent"
                         Command="{Binding Path=DataContext.GenerateDataFormCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
-                        CommandParameter="{Binding Path=., RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <Button.Content>
-                        Generate Data Form
-                    </Button.Content>
-                </Button>
-            </WrapPanel>
+                        CommandParameter="{Binding Path=., RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFDE1010" ToolTip="Generate a data entry form">
+                        <Button.Content>
+                            <fa:ImageAwesome Icon="FileText" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF918991" />
+                        </Button.Content>
+                    </Button>
+                </WrapPanel>
+            </Border>
         </Grid>
-        <Border  Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch">
-            <StackPanel>
-                <TextBlock Text="Data Form Viewer" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20"></TextBlock>
-                <Border Height="1" Width="Auto" HorizontalAlignment="Stretch" BorderBrush="Gray" BorderThickness="2"></Border>
-            </StackPanel>
+        <Border Grid.Row="0" Grid.Column="1"  Margin="1, 0, 1, 0" Visibility="{Binding IsDataFormViewAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Expander ExpandDirection="Right" IsExpanded="{Binding IsDataFormViewExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Border>
-        <Grid Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" Margin="15, 0, 15, 0" Background="Beige">
+
+        <Grid Grid.Row="0" Grid.Column="2" VerticalAlignment="Stretch" Margin="15, 0, 15, 0" Visibility="{Binding IsDataFormViewExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Generated Data Form" HorizontalContentAlignment="Center" FontSize="16" FontWeight="Bold"></Label>
-            <!--Start of Data Form Viewer-->
-            <Grid x:Name="DataFormGrid" Grid.Row="1" Grid.ColumnSpan="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Border Grid.Row="0"  BorderBrush="Gray" BorderThickness="0.5, 0, 0.5, 0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <Image Source="Images/form-app-6.jpg" Height="100" Width="300" Stretch="UniformToFill" ></Image>
-                </Border>
-                <Border Grid.Row="1"  BorderBrush="Gray" BorderThickness="0.5, 0, 0.5, 0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <Label Content="{Binding DataFormHeader, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" FontSize="16" FontWeight="Bold"></Label>
-                </Border>
-                <Border Grid.Row="2"  BorderBrush="Gray" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <DataGrid HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" AutoGenerateColumns="False" CanUserAddRows="False"
-                              ItemsSource="{Binding DataFormEntries, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn  Width="Auto">
-                                <DataGridTemplateColumn.Header>
-                                    <TextBlock Text="Fields"></TextBlock>
-                                </DataGridTemplateColumn.Header>
-                                <DataGridTemplateColumn.HeaderStyle>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Style.Setters>
-                                            <Setter Property="MinWidth" Value="100"></Setter>
-                                            <Setter Property="FontWeight" Value="Bold"></Setter>
-                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                            <Setter Property="VerticalContentAlignment" Value="Center" />
-                                            <Setter Property="Background" Value="Silver" />
-                                            <Setter Property="BorderBrush" Value="White" />
-                                            <Setter Property="BorderThickness" Value="1" />
-                                            <Setter Property="Padding" Value="5" />
-                                            <Setter Property="Margin" Value="0, 2, 1, 2" />
-                                        </Style.Setters>
-                                    </Style>
-                                </DataGridTemplateColumn.HeaderStyle>
-                                <DataGridTemplateColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Style.Setters>
-                                            <Setter Property="VerticalContentAlignment" Value="Center" />
-                                            <Setter Property="HorizontalContentAlignment" Value="Right" />
-                                            <Setter Property="Margin" Value="0" />
-                                        </Style.Setters>
-                                    </Style>
-                                </DataGridTemplateColumn.CellStyle>
-                                <DataGridTemplateColumn.CellTemplateSelector>
-                                    <datatemplates:DataFormViewerLabelTemplateSelector
-                                                    LabelControlViewTemplate="{StaticResource LabelControlViewTemplate}"
-                                                    TextBlockControlViewTemplate="{StaticResource TextBlockControlViewTemplate}" />
-                                </DataGridTemplateColumn.CellTemplateSelector>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn  Width="Auto">
-                                <DataGridTemplateColumn.CellTemplateSelector>
-                                    <datatemplates:DataFormDesignerValueTemplateSelector
-                                        TextBoxControlValueTemplate="{StaticResource TextBoxControlValueTemplate}"
-                                        ListBoxControlValueTemplate="{StaticResource ListBoxControlValueTemplate}" />
-                                </DataGridTemplateColumn.CellTemplateSelector>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Border>
-                <Border Grid.Row="3"  BorderBrush="Gray" BorderThickness="0.5, 0, 0.5, 0.5"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <Label Content="{Binding DataFormFooter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" FontSize="16" FontWeight="Bold"></Label>
-                </Border>
-            </Grid>
-            <!--End of Data Form Viewer-->
+            <Border Grid.Row="0" Grid.ColumnSpan="4" BorderBrush="Gray" BorderThickness="0.5, 0.5, 0.5, 0.5" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Label Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="4" Content="DATA FORM VIEWER" HorizontalContentAlignment="Center" FontSize="20" Margin="0" FontWeight="Bold"></Label>
+            </Border>
+            <Label Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding DataFormTitle}" HorizontalContentAlignment="Center" FontSize="16" Margin="0" FontWeight="Bold"></Label>
+            <Border Grid.Row="1"  Grid.ColumnSpan="2" Height="1" Width="Auto" BorderBrush="Gray" BorderThickness="0,1,1,0" Margin="0, 0, 0, 5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+            <Border Grid.Row="2" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="0.5, 0.5, 0.5, 0.5" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid x:Name="DataFormGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Row="0" Grid.ColumnSpan="2" Source="Images/form-app-5.jpg" Height="100"  Margin="0" Stretch="UniformToFill" ></Image>
+                    <Border Grid.Row="1" Grid.ColumnSpan="2" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 10, 1" BorderThickness="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Form Header" FontSize="12" Margin="5" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <Border Grid.Row="0"  Grid.ColumnSpan="2" Height="1" Width="Auto" BorderBrush="Gray" BorderThickness="0,1,1,0" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+                            <!--Headers-->
+                            <Border Grid.Row="1" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="0.5">
+                                <TextBlock Text="Unique Id" HorizontalAlignment="Right" Margin="10, 0, 10, 0" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="0.5">
+                                <TextBlock Text="Category" HorizontalAlignment="Right" Margin="10, 0, 10, 0" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="0.5">
+                                <TextBlock Text="Sub category" HorizontalAlignment="Right" Margin="10, 0, 10, 0" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="0.5">
+                                <TextBlock Text="Display Header" HorizontalAlignment="Right" Margin="10, 0, 10, 0" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="0.5">
+                                <TextBlock Text="Discription" HorizontalAlignment="Right" Margin="10, 0, 10, 0" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="6" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="0.5">
+                                <TextBlock Text="Captured By" HorizontalAlignment="Right" Margin="10, 0, 10, 0" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                            </Border>
+                            <Border Grid.Row="7" Grid.Column="0" CornerRadius="10" BorderBrush="Gray" Margin="10, 2, 0, 0" BorderThickness="0.5">
+                                <TextBlock Grid.Row="7" Grid.Column="0" Text="Captured On" HorizontalAlignment="Right" Margin="10, 0, 10, 0" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                            </Border>
+                            <!--Values-->
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding DataFormUniqueId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource GuidToStringConverter}}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="1, 0, 0 0" Margin="10, 0, 10, 0"></TextBlock>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CurrentCategorySelection.CategoryName}" HorizontalAlignment="Left" Margin="10, 0, 10, 0" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CurrentSubCategorySelection.SubCategoryName}" HorizontalAlignment="Left" Margin="10, 0, 10, 0" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding DisplayHeader}" HorizontalAlignment="Left" Margin="10, 0, 10, 0" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding FormDescription}" HorizontalAlignment="Left" Margin="10, 0, 10, 0" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding DataFormCapturedBy}" HorizontalAlignment="Left" Margin="10, 0, 10, 0" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding DataFormCapturedOn}" HorizontalAlignment="Left" Margin="10, 0, 10, 0" VerticalAlignment="Center"></TextBlock>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="2" Grid.ColumnSpan="2"  BorderBrush="Gray" Margin="10, 0, 10, 10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Form Body" FontSize="12" Margin="0,0,0,3" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+
+                            <Border Grid.Row="0" Height="0.5" Width="Auto" BorderBrush="Gray" BorderThickness="0,1,1,0" Margin="0,3,0,3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+                            <DataGrid Grid.Row="1" HeadersVisibility="None" BorderThickness="0" GridLinesVisibility="None" AutoGenerateColumns="False" CanUserAddRows="False"
+                                    ItemsSource="{Binding DataFormEntries, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Stretch" IsSynchronizedWithCurrentItem="True">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn  Width="Auto">
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock Text="Field Name"></TextBlock>
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.CellTemplateSelector>
+                                            <datatemplates:DataFormViewerLabelTemplateSelector
+                                            LabelControlViewTemplate="{StaticResource LabelControlViewTemplate}"
+                                            TextBlockControlViewTemplate="{StaticResource TextBlockControlViewTemplate}" />
+                                        </DataGridTemplateColumn.CellTemplateSelector>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Width="Auto">
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock Text="Value"></TextBlock>
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.CellTemplateSelector>
+                                            <datatemplates:DataFormViewerValueTemplateSelector
+                                            TextBoxControlValueViewerTemplate="{StaticResource TextBoxControlValueViewerTemplate}"
+                                            ListBoxControlValueViewerTemplate="{StaticResource ListBoxControlValueViewerTemplate}"
+                                            ComboBoxControlValueViewerTemplate="{StaticResource ComboBoxControlValueViewerTemplate}"
+                                            DatePickerControlValueViewerTemplate ="{StaticResource DatePickerControlValueViewerTemplate }" />
+                                        </DataGridTemplateColumn.CellTemplateSelector>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Border Grid.Row="2" Height="0.5" Width="Auto" BorderBrush="Gray" BorderThickness="0,1,1,0" Margin="0,3,0,3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+            <Border Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" CornerRadius="10" BorderBrush="Gray"  Margin="0, 2, 0, 15" BorderThickness="3">
+                <WrapPanel HorizontalAlignment="Center">
+                    <Button Height="24" Width="24" Background="Transparent" BorderThickness="0" Margin="1"  Command="{Binding Path=DataContext.SaveToLocalCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                        CommandParameter="{Binding Path=., RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <fa:ImageAwesome Icon="Save" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF104AE6" />
+                    </Button>
+                    <Button Height="24" Width="24" Background="Transparent" BorderThickness="0" Margin="1"  Command="{Binding Path=DataContext.UploadToCloudCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                        CommandParameter="{Binding Path=., RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <fa:ImageAwesome Icon="Upload" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF10B410" />
+                    </Button>
+                </WrapPanel>
+            </Border>
         </Grid>
     </Grid>
 </Window>

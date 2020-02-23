@@ -1,5 +1,4 @@
-﻿using SSS.DataFormManager.ViewModels;
-using SSS.DataFormManager.Views.Helpers;
+﻿using SSS.DataFormManager.Views.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -17,9 +16,9 @@ namespace SSS.DataFormManager
         public MainWindow()
         {
             InitializeComponent();
-            var dataContext = new MainWindowViewModel();
-            DataContext = dataContext;
-            dgDataFormTemplateDesigner.ItemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
+            //var dataContext = new MainWindowViewModel();
+            //DataContext = dataContext;
+            //dgDataFormTemplateDesigner.ItemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
             // var listBox = new DataFormListBox();
         }
 
@@ -29,11 +28,11 @@ namespace SSS.DataFormManager
 
         private void ItemContainerGenerator_ItemsChanged(object sender, ItemsChangedEventArgs e)
         {
-            IEnumerable<DataGridRow> rows = FindVisualChildren<DataGridRow>(dgDataFormTemplateDesigner);
-            foreach (DataGridRow row in rows)
-            {
-                row.Header = (row.GetIndex() + 1).ToString();
-            }
+            //IEnumerable<DataGridRow> rows = FindVisualChildren<DataGridRow>(dgDataFormTemplateDesigner);
+            //foreach (DataGridRow row in rows)
+            //{
+            //    row.Header = (row.GetIndex() + 1).ToString();
+            //}
         }
 
         private static IEnumerable<T> FindVisualChildren<T>(DependencyObject dependencyObject)
@@ -65,15 +64,16 @@ namespace SSS.DataFormManager
             {
                 row.Header = (row.GetIndex() + 1).ToString();
             }
-            //int index = myList[myList.Count - 1].GetIndex();
-            //dgDataFormTemplateDesigner.SelectedItem = dgDataFormTemplateDesigner.Items[index];
-            //dgDataFormTemplateDesigner.ScrollIntoView(dgDataFormTemplateDesigner.Items[index]);
+
+            int index = myList[myList.Count - 1].GetIndex();
+            dgDataFormTemplateDesigner.SelectedItem = dgDataFormTemplateDesigner.Items[index];
+            dgDataFormTemplateDesigner.ScrollIntoView(dgDataFormTemplateDesigner.Items[index]);
             //DataGridRow dgrow = (DataGridRow)dgDataFormTemplateDesigner.ItemContainerGenerator.ContainerFromItem(dgDataFormTemplateDesigner.Items[index]);
             //dgrow.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             //dgDataFormTemplateDesigner.CurrentCell = new DataGridCellInfo(dgDataFormTemplateDesigner.Items[index], dgDataFormTemplateDesigner.Columns[0]);
             //dgDataFormTemplateDesigner.BeginEdit();
             ////first focus the grid
-            //dataGrid1.Focus();
+            //dgDataFormTemplateDesigner.Focus();
         }
 
         private void DgDataFormTemplateDesigner_Loaded(object sender, RoutedEventArgs e)

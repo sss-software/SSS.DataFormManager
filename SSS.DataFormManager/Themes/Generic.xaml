@@ -3,10 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:local="clr-namespace:SSS.DataFormManager.Views.Controls.CustomControls.CollectionCustomControl"
-    xmlns:converters="clr-namespace:SSS.DataFormManager.Views.Converters">
-
-    <converters:ObjectTypeToNameConverter x:Key="ObjectTypeToNameConverter" />
-    <converters:NewItemTypesComboBoxConverter x:Key="NewItemTypesComboBoxConverter" />
+    xmlns:converters="clr-namespace:SSS.DataFormManager.Views.Converters;assembly=SSS.DataFormManager">
     <Style x:Key="CollectionControlButtonStyle"
          TargetType="{x:Type Button}">
         <Style.Triggers>
