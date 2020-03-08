@@ -14,5 +14,9 @@ namespace SSS.DataFormManager.Models
         [XmlArray("DataEntries")]
         [XmlArrayItem("DataEntry", typeof(DataEntry))]
         public ObservableCollection<DataEntry> DataEntries { get; set; }
+
+        [XmlArray("Attachments")]
+        [XmlArrayItem("DataFormAttachment", typeof(DataFormAttachment))]
+        public ObservableCollection<DataFormAttachment> Attachments { get; set; }
     }
 }

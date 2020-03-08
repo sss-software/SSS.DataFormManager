@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Media;
 
 namespace SSS.FileManagementService.Models
 {
@@ -22,6 +23,7 @@ namespace SSS.FileManagementService.Models
         #region Properties
 
         public FileStream FileStreamObj { get; set; }
+        public ImageSource ImageSourceObj { get; set; }
         public string FileStreamText { get; set; }
         public List<string> Errors { get; }
         public List<Exception> Exceptions { get; }

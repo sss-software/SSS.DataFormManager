@@ -1,4 +1,5 @@
-﻿using SSS.DataFormManager.Models;
+﻿using SSS.DataFormManager.Domain.Services;
+using SSS.DataFormManager.Models;
 using SSS.DataFormManager.Views.Commands;
 using SSS.DataFormManager.Views.Helpers;
 using SSS.DataFormManager.Views.Windows;
@@ -19,28 +20,32 @@ namespace SSS.DataFormManager.ViewModels
         private readonly IFileManager fileManager;
         private readonly IGoogleDriveCloudManager googleDriveCloudManager;
         private readonly ISerializationManager serializationManager;
+        private ObservableCollection<DataFormEntry> _DataFormEntries2;
+        private string _dataFormFooter;
+        private ObservableCollection<DataFormSubCategory> _dataFormSubCategories;
+        private DataFormDesignTemplate dataFormTemplate;
+        private bool _IsPropertiesPopupOpen;
         private DataFormCategory currentCategorySelection;
+        private int currentDataFormTypeSelectedIndex;
         private DataFormType currentDataFormTypeSelection;
         private int currentSelectedIndex;
         private DataFormSubCategory currentSubCategorySelection;
         private string dataFormCapturedBy;
         private ObservableCollection<DataFormCategory> dataFormCategories;
         private ObservableCollection<DataFormEntry> dataFormEntries;
-        private ObservableCollection<DataFormEntry> _DataFormEntries2;
-        private string _dataFormFooter;
-        private ObservableCollection<DataFormSubCategory> _dataFormSubCategories;
-        private DataFormTemplate _DataFormTemplate;
-        private string dataFormTitle;
+        private string formTitle;
+        private ObservableCollection<DataFormType> dataFormTypes;
         private Guid dataFormUniqueId;
-        private bool _IsPropertiesPopupOpen;
+        private string displayHeader;
+        private string formDescription;
+        private bool isDataFormViewAvailable;
+        private bool isDataFormViewExpanded;
         private ObservableCollection<Type> newItemTypes;
         private DataFormEntry selectedItem;
-        private string displayHeader;
-        private bool isDataFormViewExpanded;
-        private string formDescription;
-        private ObservableCollection<DataFormType> dataFormTypes;
-        private int currentDataFormTypeSelectedIndex;
-        private bool isDataFormViewAvailable;
+        private DataFormDesignTemplate dataFormDesignTemplate;
+        private int currentCategorySelectedIndex;
+        private int currentSubCategorySelectedIndex;
+        public ObservableCollection<DataFormAttachment> dataFormAttachments;
 
         public MainWindowViewModel()
         {
@@ -57,6 +62,7 @@ namespace SSS.DataFormManager.ViewModels
             PerformViewModelSetup();
         }
 
+        public ICommand AddAttachmentCommand { get; set; }
         public ICommand AddDataFormEntryCommand { get; set; }
 
         public ICommand AddNewRowCommand { get; set; }
@@ -72,6 +78,19 @@ namespace SSS.DataFormManager.ViewModels
                 currentCategorySelection = value;
                 OnPropertyChanged("CurrentCategorySelection");
                 LoadDataFormSubCategories(currentCategorySelection.CategoryId);
+            }
+        }
+
+        public int CurrentDataFormTypeSelectedIndex
+        {
+            get
+            {
+                return currentDataFormTypeSelectedIndex;
+            }
+            set
+            {
+                currentDataFormTypeSelectedIndex = value;
+                OnPropertyChanged("CurrentDataFormTypeSelectedIndex");
             }
         }
 
@@ -101,16 +120,16 @@ namespace SSS.DataFormManager.ViewModels
             }
         }
 
-        public int CurrentDataFormTypeSelectedIndex
+        public int CurrentCategorySelectedIndex
         {
             get
             {
-                return currentDataFormTypeSelectedIndex;
+                return currentCategorySelectedIndex;
             }
             set
             {
-                currentDataFormTypeSelectedIndex = value;
-                OnPropertyChanged("CurrentDataFormTypeSelectedIndex");
+                currentCategorySelectedIndex = value;
+                OnPropertyChanged("CurrentCategorySelectedIndex");
             }
         }
 
@@ -127,6 +146,19 @@ namespace SSS.DataFormManager.ViewModels
             }
         }
 
+        public int CurrentSubCategorySelectedIndex
+        {
+            get
+            {
+                return currentSubCategorySelectedIndex;
+            }
+            set
+            {
+                currentSubCategorySelectedIndex = value;
+                OnPropertyChanged("CurrentSubCategorySelectedIndex");
+            }
+        }
+
         public string DataFormCapturedBy
         {
             get
@@ -140,44 +172,7 @@ namespace SSS.DataFormManager.ViewModels
             }
         }
 
-        public string DisplayHeader
-        {
-            get
-            {
-                return displayHeader;
-            }
-            set
-            {
-                displayHeader = value;
-                OnPropertyChanged("DisplayHeader");
-            }
-        }
-
-        public bool IsDataFormViewExpanded
-        {
-            get
-            {
-                return isDataFormViewExpanded;
-            }
-            set
-            {
-                isDataFormViewExpanded = value;
-                OnPropertyChanged("IsDataFormViewExpanded");
-            }
-        }
-
-        public bool IsDataFormViewAvailable
-        {
-            get
-            {
-                return isDataFormViewAvailable;
-            }
-            set
-            {
-                isDataFormViewAvailable = value;
-                OnPropertyChanged("IsDataFormViewAvailable");
-            }
-        }
+        public DateTime DataFormCapturedOn => DateTime.Now;
 
         public ObservableCollection<DataFormCategory> DataFormCategories
         {
@@ -205,29 +200,16 @@ namespace SSS.DataFormManager.ViewModels
             }
         }
 
-        public ObservableCollection<DataFormType> DataFormTypes
+        public ObservableCollection<DataFormAttachment> DataFormAttachments
         {
             get
             {
-                return dataFormTypes;
+                return dataFormAttachments;
             }
             set
             {
-                dataFormTypes = value;
-                OnPropertyChanged("DataFormTypes");
-            }
-        }
-
-        public ObservableCollection<DataFormEntry> DataFormEntries2
-        {
-            get
-            {
-                return _DataFormEntries2;
-            }
-            set
-            {
-                _DataFormEntries2 = value;
-                OnPropertyChanged("DataFormEntries2");
+                dataFormAttachments = value;
+                OnPropertyChanged("DataFormAttachments");
             }
         }
 
@@ -257,29 +239,29 @@ namespace SSS.DataFormManager.ViewModels
             }
         }
 
-        public DataFormTemplate DataFormTemplate
+        public DataFormDesignTemplate DataFormDesignTemplate
         {
             get
             {
-                return _DataFormTemplate;
+                return dataFormDesignTemplate;
             }
             set
             {
-                _DataFormTemplate = value;
-                OnPropertyChanged("DataFormTemplate");
+                dataFormDesignTemplate = value;
+                OnPropertyChanged("DataFormDesignTemplate");
             }
         }
 
-        public string DataFormTitle
+        public string FormTitle
         {
             get
             {
-                return dataFormTitle;
+                return formTitle;
             }
             set
             {
-                dataFormTitle = value;
-                OnPropertyChanged("DataFormTitle");
+                formTitle = value;
+                OnPropertyChanged("FormTitle");
             }
         }
 
@@ -296,6 +278,19 @@ namespace SSS.DataFormManager.ViewModels
             }
         }
 
+        public ObservableCollection<DataFormType> DataFormTypes
+        {
+            get
+            {
+                return dataFormTypes;
+            }
+            set
+            {
+                dataFormTypes = value;
+                OnPropertyChanged("DataFormTypes");
+            }
+        }
+
         public Guid DataFormUniqueId
         {
             get
@@ -308,17 +303,46 @@ namespace SSS.DataFormManager.ViewModels
             }
         }
 
-        public DateTime DataFormCapturedOn => DateTime.Now;
+        public string DisplayHeader
+        {
+            get
+            {
+                return displayHeader;
+            }
+            set
+            {
+                displayHeader = value;
+                OnPropertyChanged("DisplayHeader");
+            }
+        }
 
         public ICommand GenerateDataFormCommand { get; set; }
 
-        public ICommand SaveToLocalCommand { get; set; }
+        public bool IsDataFormViewAvailable
+        {
+            get
+            {
+                return isDataFormViewAvailable;
+            }
+            set
+            {
+                isDataFormViewAvailable = value;
+                OnPropertyChanged("IsDataFormViewAvailable");
+            }
+        }
 
-        public ICommand SaveToCloudCommand { get; set; }
-
-        public ICommand AddAttachmentCommand { get; set; }
-
-        public ICommand RemoveAttachmentCommand { get; set; }
+        public bool IsDataFormViewExpanded
+        {
+            get
+            {
+                return isDataFormViewExpanded;
+            }
+            set
+            {
+                isDataFormViewExpanded = value;
+                OnPropertyChanged("IsDataFormViewExpanded");
+            }
+        }
 
         public bool IsPropertiesPopupOpen
         {
@@ -347,10 +371,18 @@ namespace SSS.DataFormManager.ViewModels
         }
 
         public ICommand PropertyCommand { get; set; }
-
+        public ICommand RemoveAttachmentCommand { get; set; }
         public ICommand RemoveDataFormEntryCommand { get; set; }
-
         public ICommand RowNumberGeneratorCommand { get; set; }
+        public ICommand SaveToCloudCommand { get; set; }
+        public ICommand SaveToLocalCommand { get; set; }
+
+        public ICommand AddFormTypeCommand { get; set; }
+        public ICommand RemoveFormTypeCommand { get; set; }
+        public ICommand AddCategoryCommand { get; set; }
+        public ICommand RemoveCategoryCommand { get; set; }
+        public ICommand AddSubCategoryCommand { get; set; }
+        public ICommand RemoveSubCategoryCommand { get; set; }
 
         public DataFormEntry SelectedItem
         {
@@ -364,6 +396,8 @@ namespace SSS.DataFormManager.ViewModels
                 OnPropertyChanged("SelectedItem");
             }
         }
+
+        public DataFormDTO DataFormDTO { get; private set; }
 
         private void AddDataFormEntryCommandExecute(object parameter)
         {
@@ -416,31 +450,75 @@ namespace SSS.DataFormManager.ViewModels
 
         private void GenerateDataFormCommandExecute(object obj)
         {
+            DataFormGenerationService service = new DataFormGenerationService();
+            DataFormDesignTemplate.DataFormHeader = new DataFormHeader()
+            {
+                SynchronizationId = -1,
+                LocalId = DataFormUniqueId.ToString(),
+                CloudId = string.Empty,
+                FormTitle = FormTitle,
+                FormDescription = FormDescription,
+                FormDisplayHeader = DisplayHeader,
+                SelectedFormType = CurrentDataFormTypeSelection.FormTypeName,
+                SelectedFormTypeIndex = CurrentDataFormTypeSelectedIndex,
+                SelectedCategory = CurrentCategorySelection.CategoryName,
+                SelectedCategoryIndex = CurrentCategorySelectedIndex,
+                SelectedSubCategory = CurrentSubCategorySelection.SubCategoryName,
+                SelectedSubCategoryIndex = CurrentSubCategorySelectedIndex,
+                DataFormCategories = DataFormCategories,
+                DataFormSubCategories = DataFormSubCategories,
+                DataFormTypes = DataFormTypes,
+                IsEncrypted = true
+            };
+            var dataEntries = new ObservableCollection<DataEntry>();
+            foreach (DataFormEntry dataFormEntry in DataFormEntries)
+            {
+                DataEntry dataEntry = new DataEntry()
+                {
+                    LabelControl = dataFormEntry.LabelControl,
+                    LabelValue = dataFormEntry.LabelValue,
+                    DataControl = dataFormEntry.DataControl,
+                    TextBoxControlValue = dataFormEntry.TextBoxControlValue,
+                    ListBoxControlSelectedValue = dataFormEntry.ListBoxControlValue,
+                    ListBoxControlItemsSource = dataFormEntry.ListBoxItemsSource,
+                    ListBoxControlSelectedItem = dataFormEntry.ListBoxSelectedItem,
+                    ListBoxControlSelectedIndex = dataFormEntry.ListBoxSelectedIndex,
+                    ComboBoxControlSelectedValue = dataFormEntry.ListBoxControlValue,
+                    ComboBoxControlItemsSource = dataFormEntry.ComboBoxItemsSource,
+                    ComboBoxControlSelectedItem = dataFormEntry.ComboBoxSelectedItem,
+                    ComboBoxControlSelectedIndex = dataFormEntry.ComboBoxSelectedIndex
+                };
+                dataEntries.Add(dataEntry);
+            }
+
+            var attachments = new ObservableCollection<DataFormAttachment>();
+
+            DataFormDesignTemplate.DataFormBody = new DataFormBody()
+            {
+                DataEntries = dataEntries,
+                Attachments = attachments
+            };
+            DataFormDesignTemplate.DataFormFooter = new DataFormFooter()
+            {
+                CapturedBy = DataFormCapturedBy,
+                CapturedOn = DateTime.Now,
+                Note = string.Empty
+            };
+            DataFormDTO = service.CreateDataFormDTO(DataFormDesignTemplate);
             IsDataFormViewAvailable = true;
             IsDataFormViewExpanded = true;
-            // DataFormEntries2 = DataFormEntries;
-            // GoogleDriveAccessService.IsAuthenticated();
+        }
 
-            //DataFormGenerationService dataFormGenerationService = new DataFormGenerationService();
-            //DataFormDTO dto = dataFormGenerationService.CreateDataFormDTO(DataFormEntries);
-            //SerializationRequest serializationRequest = new SerializationRequest()
-            //{
-            //    ObjectToSerialize = dto,
-            //    ObjectType = dto.GetType(),
-            //    OutputFilePath = @"C:\Users\trebmals\Downloads\XDSL\data.xml"
-            //};
-            //SerializationManager serialization = new SerializationManager();
-            //SerializationResult result = serialization.SerializeToXML(serializationRequest);
-            //if (result.IsSerizationValid)
-            //{
-            //    EncryptionManager encryptionManager = new EncryptionManager();
-            //    EncryptionResult er = encryptionManager.Encrypt(new EncryptionRequest()
-            //    {
-            //    });
-            //    if (er.IsEncryptionValid)
-            //    {
-            //    }
-            //}
+        private ObservableCollection<DataFormType> GetSortedList(ObservableCollection<DataFormType> list)
+        {
+            ObservableCollection<DataFormType> result = new ObservableCollection<DataFormType>();
+            ObservableCollection<DataFormType> temp = new ObservableCollection<DataFormType>(list.OrderBy(p => p.FormTypeName));
+            result.Clear();
+            foreach (DataFormType dataFormType in temp)
+            {
+                result.Add(dataFormType);
+            }
+            return result;
         }
 
         private void LoadDataFormCategories()
@@ -506,7 +584,7 @@ namespace SSS.DataFormManager.ViewModels
             {
                 DataFormTypeId = 1,
                 FormTypeName = "Personal Information",
-                FormTypeNameDescription = "Personal Information",
+                FormTypeDescription = "Personal Information",
                 IsActive = true
             });
 
@@ -514,7 +592,7 @@ namespace SSS.DataFormManager.ViewModels
             {
                 DataFormTypeId = 2,
                 FormTypeName = "Business Information",
-                FormTypeNameDescription = "Business Information",
+                FormTypeDescription = "Business Information",
                 IsActive = true
             });
 
@@ -522,7 +600,7 @@ namespace SSS.DataFormManager.ViewModels
             {
                 DataFormTypeId = 3,
                 FormTypeName = "Personal Finances",
-                FormTypeNameDescription = "Personal Finances",
+                FormTypeDescription = "Personal Finances",
                 IsActive = true
             });
 
@@ -530,7 +608,7 @@ namespace SSS.DataFormManager.ViewModels
             {
                 DataFormTypeId = 4,
                 FormTypeName = "Programming and Development",
-                FormTypeNameDescription = "",
+                FormTypeDescription = "",
                 IsActive = true
             });
 
@@ -538,28 +616,16 @@ namespace SSS.DataFormManager.ViewModels
             {
                 DataFormTypeId = 5,
                 FormTypeName = "Personal Contacts",
-                FormTypeNameDescription = "",
+                FormTypeDescription = "",
                 IsActive = true
             });
 
             DataFormTypes = GetSortedList(DataFormTypes);
         }
 
-        private ObservableCollection<DataFormType> GetSortedList(ObservableCollection<DataFormType> list)
-        {
-            ObservableCollection<DataFormType> result = new ObservableCollection<DataFormType>();
-            ObservableCollection<DataFormType> temp = new ObservableCollection<DataFormType>(list.OrderBy(p => p.FormTypeName));
-            result.Clear();
-            foreach (DataFormType dataFormType in temp)
-            {
-                result.Add(dataFormType);
-            }
-            return result;
-        }
-
         private void PerformViewModelSetup()
         {
-            DataFormTemplate = new DataFormTemplate();
+            DataFormDesignTemplate = new DataFormDesignTemplate();
             DataFormEntries = new ObservableCollection<DataFormEntry>();
             NewItemTypes = new ObservableCollection<Type>();
             NewItemTypes.Add(typeof(DataFormListEntry));
@@ -569,6 +635,18 @@ namespace SSS.DataFormManager.ViewModels
             RowNumberGeneratorCommand = new RelayCommand(RowNumberGeneratorExecute, CanRowNumberGeneratorExecute);
             PropertyCommand = new RelayCommand(PropertyCommandExecute, CanPropertyCommandExecute);
             GenerateDataFormCommand = new RelayCommand(GenerateDataFormCommandExecute, CanGenerateDataFormCommand);
+
+            SaveToCloudCommand = new RelayCommand(SaveToCloudCommandExecute, CanSaveToCloudCommandExecute);
+            SaveToLocalCommand = new RelayCommand(SaveToLocalCommandExecute, CanSaveToLocalCommandExecute);
+
+            AddFormTypeCommand = new RelayCommand(AddFormTypeCommandExecute, CanAddFormTypeCommandExecute);
+            RemoveFormTypeCommand = new RelayCommand(RemoveFormTypeCommandExecute, CanRemoveFormTypeCommandExecute);
+
+            AddCategoryCommand = new RelayCommand(AddCategoryCommandExecute, CanAddCategoryCommandExecute);
+            RemoveCategoryCommand = new RelayCommand(RemoveCategoryCommandExecute, CanRemoveCategoryCommandExecute);
+            AddSubCategoryCommand = new RelayCommand(AddSubCategoryCommandExecute, CanAddSubCategoryCommandExecute);
+            RemoveSubCategoryCommand = new RelayCommand(RemoveSubCategoryCommandExecute, CanRemoveSubCategoryCommandExecute);
+
             LoadDataFormTypes();
             LoadDataFormCategories();
 
@@ -582,6 +660,85 @@ namespace SSS.DataFormManager.ViewModels
             {
                 CurrentDataFormTypeSelection = DataFormTypes[0];
             }
+        }
+
+        private bool CanRemoveSubCategoryCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void RemoveSubCategoryCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanAddSubCategoryCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void AddSubCategoryCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanRemoveCategoryCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void RemoveCategoryCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanAddCategoryCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void AddCategoryCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanRemoveFormTypeCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void RemoveFormTypeCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanAddFormTypeCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void AddFormTypeCommandExecute(object obj)
+        {
+        }
+
+        private bool CanSaveToLocalCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void SaveToLocalCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanSaveToCloudCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void SaveToCloudCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
         }
 
         private void PropertyCommandExecute(object parameter)

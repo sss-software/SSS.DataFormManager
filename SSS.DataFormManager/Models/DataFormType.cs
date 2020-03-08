@@ -1,12 +1,15 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace SSS.DataFormManager.Models
 {
+    [Serializable]
     public class DataFormType : INotifyPropertyChanged
     {
         private long dataFormTypeId;
         private string formTypeName;
-        private string formTypeNameDescription;
+        private string formTypeDescription;
         private bool isActive;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -23,6 +26,7 @@ namespace SSS.DataFormManager.Models
         {
         }
 
+        [XmlElement("DataFormTypeId")]
         public long DataFormTypeId
         {
             get
@@ -36,6 +40,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
+        [XmlElement("FormTypeName")]
         public string FormTypeName
         {
             get
@@ -49,19 +54,21 @@ namespace SSS.DataFormManager.Models
             }
         }
 
-        public string FormTypeNameDescription
+        [XmlElement("FormTypeDescription")]
+        public string FormTypeDescription
         {
             get
             {
-                return formTypeNameDescription;
+                return formTypeDescription;
             }
             set
             {
-                formTypeNameDescription = value;
-                OnPropertyChanged("FormTypeNameDescription");
+                formTypeDescription = value;
+                OnPropertyChanged("FormTypeDescription");
             }
         }
 
+        [XmlElement("IsActive")]
         public bool IsActive
         {
             get

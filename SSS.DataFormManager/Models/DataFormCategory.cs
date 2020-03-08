@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace SSS.DataFormManager.Models
 {
+    [Serializable]
     public class DataFormCategory : INotifyPropertyChanged
     {
         private long _categoryId;
@@ -19,6 +22,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
+        [XmlElement("CategoryId")]
         public long CategoryId
         {
             get
@@ -32,6 +36,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
+        [XmlElement("CategoryName")]
         public string CategoryName
         {
             get
@@ -45,6 +50,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
+        [XmlElement("Description")]
         public string Description
         {
             get
@@ -58,6 +64,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
+        [XmlElement("SubCategories")]
         public ICollection<DataFormSubCategory> SubCategories
         {
             get;

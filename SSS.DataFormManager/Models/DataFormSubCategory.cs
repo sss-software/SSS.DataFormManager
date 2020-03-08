@@ -1,7 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace SSS.DataFormManager.Models
 {
+    [Serializable]
     public class DataFormSubCategory : INotifyPropertyChanged
     {
         private long _categoryId;
@@ -19,6 +22,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
+        [XmlElement("CategoryId")]
         public long CategoryId
         {
             get
@@ -32,6 +36,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
+        [XmlElement("SubCategoryId")]
         public long SubCategoryId
         {
             get
@@ -45,6 +50,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
+        [XmlElement("SubCategoryName")]
         public string SubCategoryName
         {
             get
@@ -58,6 +64,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
+        [XmlElement("Description")]
         public string Description
         {
             get
