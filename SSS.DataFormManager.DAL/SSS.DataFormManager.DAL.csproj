@@ -60,18 +60,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Contexts\DataFormDataContext.cs" />
+    <Compile Include="Models\DataFormBaseModel.cs" />
     <Compile Include="Models\DataFormCategory.cs" />
+    <Compile Include="Models\DataFormRepositoryResult.cs" />
     <Compile Include="Models\DataFormSubCategory.cs" />
     <Compile Include="Models\DataFormType.cs" />
-    <Compile Include="Models\SynchronizationRegister.cs" />
+    <Compile Include="Models\SynchronizationRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\DataFormRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IDataFormRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

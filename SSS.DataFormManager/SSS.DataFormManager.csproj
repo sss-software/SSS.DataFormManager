@@ -122,13 +122,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\DataFormAttachment.cs" />
-    <Compile Include="Models\DataFormCategory.cs" />
+    <Compile Include="Models\DataFormCategoryDTO.cs" />
     <Compile Include="Models\DataFormDTO.cs" />
     <Compile Include="Models\DataFormListBox.cs" />
-    <Compile Include="Models\DataFormSubCategory.cs" />
-    <Compile Include="Models\DataFormType.cs" />
+    <Compile Include="Models\DataFormSubCategoryDTO.cs" />
+    <Compile Include="Models\DataFormTypeDTO.cs" />
     <Compile Include="Models\Enums\DataControlEnum.cs" />
     <Compile Include="Domain\Services\DataFormGenerationService.cs" />
+    <Compile Include="ViewModels\Interfaces\ISubCategoryWindowViewModel.cs" />
+    <Compile Include="ViewModels\SubCategoryWindowViewModel.cs" />
+    <Compile Include="ViewModels\CategoryWindowViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ICategoryWindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\Commands\RelayCommand.cs" />
     <Compile Include="Views\Controls\CustomControls\CollectionCustomControl\CollectionCustomControl.cs" />
@@ -162,6 +166,15 @@
     <Compile Include="Views\TemplateSelectors\LabelValueTemplateSelector.cs" />
     <Compile Include="Models\DataFormEntry.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\Windows\SubCategoryWindow.xaml.cs">
+      <DependentUpon>SubCategoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\CategoryWindow.xaml.cs">
+      <DependentUpon>CategoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\FormsTypeWindow.xaml.cs">
+      <DependentUpon>FormsTypeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\PropertiesWindow.xaml.cs">
       <DependentUpon>PropertiesWindow.xaml</DependentUpon>
     </Compile>
@@ -182,6 +195,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\UserControls\PopUpUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\SubCategoryWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Windows\CategoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\FormsTypeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,9 +287,17 @@
       <Project>{19EFC710-848D-4DC4-A7E9-4280ABF69516}</Project>
       <Name>SSS.ArchiveManagementService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SSS.CommonUtilityService\SSS.CommonUtilityService.csproj">
+      <Project>{90E0FD76-6924-4629-85CC-4BF8407C51F3}</Project>
+      <Name>SSS.CommonUtilityService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SSS.CryptoGrapher\SSS.EncryptionManagementService.csproj">
       <Project>{9C0C7089-73AD-42C9-9C4F-86881B36DEE3}</Project>
       <Name>SSS.EncryptionManagementService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SSS.DataFormManager.DAL\SSS.DataFormManager.DAL.csproj">
+      <Project>{B048242C-4FBF-4D5D-906F-48656ABCDDB0}</Project>
+      <Name>SSS.DataFormManager.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\SSS.FileManagementService\SSS.FileManagementService.csproj">
       <Project>{C7BE4100-F2E6-43A3-BB3C-5F8D09962A98}</Project>

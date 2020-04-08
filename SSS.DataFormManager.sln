@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSS.SerializationManagement
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSS.DataFormManager.DAL", "SSS.DataFormManager.DAL\SSS.DataFormManager.DAL.csproj", "{B048242C-4FBF-4D5D-906F-48656ABCDDB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSS.CommonUtilityService", "SSS.CommonUtilityService\SSS.CommonUtilityService.csproj", "{90E0FD76-6924-4629-85CC-4BF8407C51F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{B048242C-4FBF-4D5D-906F-48656ABCDDB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B048242C-4FBF-4D5D-906F-48656ABCDDB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B048242C-4FBF-4D5D-906F-48656ABCDDB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90E0FD76-6924-4629-85CC-4BF8407C51F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90E0FD76-6924-4629-85CC-4BF8407C51F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90E0FD76-6924-4629-85CC-4BF8407C51F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90E0FD76-6924-4629-85CC-4BF8407C51F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

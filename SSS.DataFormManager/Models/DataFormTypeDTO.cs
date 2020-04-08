@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 namespace SSS.DataFormManager.Models
 {
     [Serializable]
-    public class DataFormType : INotifyPropertyChanged
+    public class DataFormTypeDTO : INotifyPropertyChanged
     {
         private long dataFormTypeId;
         private string formTypeName;
@@ -22,7 +22,7 @@ namespace SSS.DataFormManager.Models
             }
         }
 
-        public DataFormType()
+        public DataFormTypeDTO()
         {
         }
 

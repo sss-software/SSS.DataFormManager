@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace SSS.DataFormManager.Models
 {
     [Serializable]
-    public class DataFormCategory : INotifyPropertyChanged
+    public class DataFormSubCategoryDTO : INotifyPropertyChanged
     {
         private long _categoryId;
-        private string _categoryName;
-        private string _categoryDescription;
+        private long _subCategoryId;
+        private string _subCategoryName;
+        private string _subCategoryDescription;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -36,17 +36,31 @@ namespace SSS.DataFormManager.Models
             }
         }
 
-        [XmlElement("CategoryName")]
-        public string CategoryName
+        [XmlElement("SubCategoryId")]
+        public long SubCategoryId
         {
             get
             {
-                return _categoryName;
+                return _subCategoryId;
             }
             set
             {
-                _categoryName = value;
-                OnPropertyChanged("CategoryName");
+                _subCategoryId = value;
+                OnPropertyChanged("SubCategoryId");
+            }
+        }
+
+        [XmlElement("SubCategoryName")]
+        public string SubCategoryName
+        {
+            get
+            {
+                return _subCategoryName;
+            }
+            set
+            {
+                _subCategoryName = value;
+                OnPropertyChanged("SubCategoryName");
             }
         }
 
@@ -55,20 +69,13 @@ namespace SSS.DataFormManager.Models
         {
             get
             {
-                return _categoryDescription;
+                return _subCategoryDescription;
             }
             set
             {
-                _categoryDescription = value;
+                _subCategoryDescription = value;
                 OnPropertyChanged("Description");
             }
-        }
-
-        [XmlElement("SubCategories")]
-        public ICollection<DataFormSubCategory> SubCategories
-        {
-            get;
-            set;
         }
     }
 }

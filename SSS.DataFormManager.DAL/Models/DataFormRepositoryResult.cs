@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SSS.DataFormManager.DAL
+namespace SSS.DataFormManager.DAL.Models
 {
-    public class Class1
+    public class DataFormRepositoryResult
     {
     }
 }

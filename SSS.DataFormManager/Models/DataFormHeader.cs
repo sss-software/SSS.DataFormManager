@@ -48,16 +48,16 @@ namespace SSS.DataFormManager.Models
         public long SelectedSubCategoryIndex { get; set; }
 
         [XmlArray("DataFormCategories")]
-        [XmlArrayItem("DataFormCategory", typeof(DataFormCategory))]
-        public ObservableCollection<DataFormCategory> DataFormCategories { get; set; }
+        [XmlArrayItem("DataFormCategory", typeof(DataFormCategoryDTO))]
+        public ObservableCollection<DataFormCategoryDTO> DataFormCategories { get; set; }
 
         [XmlArray("DataFormSubCategories")]
-        [XmlArrayItem("DataFormSubCategory", typeof(DataFormSubCategory))]
-        public ObservableCollection<DataFormSubCategory> DataFormSubCategories { get; set; }
+        [XmlArrayItem("DataFormSubCategory", typeof(DataFormSubCategoryDTO))]
+        public ObservableCollection<DataFormSubCategoryDTO> DataFormSubCategories { get; set; }
 
         [XmlArray("DataFormTypes")]
-        [XmlArrayItem("DataFormType", typeof(DataFormType))]
-        public ObservableCollection<DataFormType> DataFormTypes { get; set; }
+        [XmlArrayItem("DataFormType", typeof(DataFormTypeDTO))]
+        public ObservableCollection<DataFormTypeDTO> DataFormTypes { get; set; }
 
         [XmlElement("IsEncrypted")]
         public bool IsEncrypted { get; set; }

@@ -1,4 +1,6 @@
-﻿using SSS.DataFormManager.Domain.Services;
+﻿using SSS.DataFormManager.DAL.Models;
+using SSS.DataFormManager.DAL.Repositories.Interfaces;
+using SSS.DataFormManager.Domain.Services;
 using SSS.DataFormManager.Models;
 using SSS.DataFormManager.Views.Commands;
 using SSS.DataFormManager.Views.Helpers;
@@ -10,7 +12,10 @@ using SSS.SerializationManagementService;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using Unity;
+using Unity.Resolution;
 
 namespace SSS.DataFormManager.ViewModels
 {
@@ -20,12 +25,13 @@ namespace SSS.DataFormManager.ViewModels
         private readonly IFileManager fileManager;
         private readonly IGoogleDriveCloudManager googleDriveCloudManager;
         private readonly ISerializationManager serializationManager;
+        private readonly IDataFormRepository dataFormRepository;
         private ObservableCollection<DataFormEntry> _DataFormEntries2;
         private string _dataFormFooter;
         private ObservableCollection<DataFormSubCategory> _dataFormSubCategories;
         private DataFormDesignTemplate dataFormTemplate;
         private bool _IsPropertiesPopupOpen;
-        private DataFormCategory currentCategorySelection;
+        private DataFormCategoryDTO currentCategorySelection;
         private int currentDataFormTypeSelectedIndex;
         private DataFormType currentDataFormTypeSelection;
         private int currentSelectedIndex;
@@ -45,20 +51,24 @@ namespace SSS.DataFormManager.ViewModels
         private DataFormDesignTemplate dataFormDesignTemplate;
         private int currentCategorySelectedIndex;
         private int currentSubCategorySelectedIndex;
-        public ObservableCollection<DataFormAttachment> dataFormAttachments;
+        private ObservableCollection<DataFormAttachment> dataFormAttachments;
+
+        private IUnityContainer container;
 
         public MainWindowViewModel()
         {
             PerformViewModelSetup();
         }
 
-        public MainWindowViewModel(IFileManager fileManager, ISerializationManager serializationManager, IEncryptionManager encryptionManager,
-                                   IGoogleDriveCloudManager googleDriveCloudManager)
+        public MainWindowViewModel(IUnityContainer container, IFileManager fileManager, ISerializationManager serializationManager, IEncryptionManager encryptionManager, IGoogleDriveCloudManager googleDriveCloudManager, IDataFormRepository dataFormRepository)
         {
+            this.container = container;
             this.fileManager = fileManager;
             this.serializationManager = serializationManager;
             this.encryptionManager = encryptionManager;
             this.googleDriveCloudManager = googleDriveCloudManager;
+            this.dataFormRepository = dataFormRepository;
+       
             PerformViewModelSetup();
         }
 
@@ -67,7 +77,7 @@ namespace SSS.DataFormManager.ViewModels
 
         public ICommand AddNewRowCommand { get; set; }
 
-        public DataFormCategory CurrentCategorySelection
+        public DataFormCategoryDTO CurrentCategorySelection
         {
             get
             {
@@ -378,10 +388,13 @@ namespace SSS.DataFormManager.ViewModels
         public ICommand SaveToLocalCommand { get; set; }
 
         public ICommand AddFormTypeCommand { get; set; }
+        public ICommand UpdateFormTypeCommand { get; set; }
         public ICommand RemoveFormTypeCommand { get; set; }
         public ICommand AddCategoryCommand { get; set; }
+        public ICommand UpdateCategoryCommand { get; set; }
         public ICommand RemoveCategoryCommand { get; set; }
         public ICommand AddSubCategoryCommand { get; set; }
+        public ICommand UpdateSubCategoryCommand { get; set; }
         public ICommand RemoveSubCategoryCommand { get; set; }
 
         public DataFormEntry SelectedItem
@@ -525,11 +538,12 @@ namespace SSS.DataFormManager.ViewModels
         {
             if (DataFormCategories == null)
             {
-                DataFormCategories = new ObservableCollection<DataFormCategory>();
-                DataFormCategories.Add(new DataFormCategory()
-                { CategoryId = 1, CategoryName = "Personal Information", Description = "Personal Information" });
-                DataFormCategories.Add(new DataFormCategory()
-                { CategoryId = 2, CategoryName = "Work Knowledge", Description = "Work Knowledge" });
+                var categories = dataFormRepository.GetDataFormCategories();
+           //DataFormCategories = new ObservableCollection<DataFormCategoryDTO>();
+           //     DataFormCategories.Add(new DataFormCategoryDTO()
+           //     { CategoryId = 1, CategoryName = "Personal Information", Description = "Personal Information" });
+           //     DataFormCategories.Add(new DataFormCategoryDTO()
+           //     { CategoryId = 2, CategoryName = "Work Knowledge", Description = "Work Knowledge" });
             }
         }
 
@@ -537,8 +551,10 @@ namespace SSS.DataFormManager.ViewModels
         {
             if (DataFormSubCategories == null)
             {
+                var subCategories = dataFormRepository.GetSynchronizationRegistries();
                 DataFormSubCategories = new ObservableCollection<DataFormSubCategory>();
             }
+    
             DataFormSubCategories.Clear();
             DataFormSubCategories.Add(new DataFormSubCategory()
             {
@@ -640,11 +656,15 @@ namespace SSS.DataFormManager.ViewModels
             SaveToLocalCommand = new RelayCommand(SaveToLocalCommandExecute, CanSaveToLocalCommandExecute);
 
             AddFormTypeCommand = new RelayCommand(AddFormTypeCommandExecute, CanAddFormTypeCommandExecute);
+            UpdateFormTypeCommand = new RelayCommand(UpdateFormTypeCommandExecute, CanUpdateFormTypeCommandExecute);
             RemoveFormTypeCommand = new RelayCommand(RemoveFormTypeCommandExecute, CanRemoveFormTypeCommandExecute);
 
             AddCategoryCommand = new RelayCommand(AddCategoryCommandExecute, CanAddCategoryCommandExecute);
+            UpdateCategoryCommand = new RelayCommand(UpdateCategoryCommandExecute, CanUpdateCategoryCommandExecute);
             RemoveCategoryCommand = new RelayCommand(RemoveCategoryCommandExecute, CanRemoveCategoryCommandExecute);
+
             AddSubCategoryCommand = new RelayCommand(AddSubCategoryCommandExecute, CanAddSubCategoryCommandExecute);
+            UpdateSubCategoryCommand = new RelayCommand(UpdateSubCategoryCommandExecute, CanUpdateSubCategoryCommandExecute);
             RemoveSubCategoryCommand = new RelayCommand(RemoveSubCategoryCommandExecute, CanRemoveSubCategoryCommandExecute);
 
             LoadDataFormTypes();
@@ -660,6 +680,51 @@ namespace SSS.DataFormManager.ViewModels
             {
                 CurrentDataFormTypeSelection = DataFormTypes[0];
             }
+        }
+
+        private bool CanUpdateSubCategoryCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void UpdateSubCategoryCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanUpdateFormTypeCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void UpdateFormTypeCommandExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanUpdateCategoryCommandExecute(object arg)
+        {
+            return true;
+        }
+
+        private void UpdateCategoryCommandExecute(object obj)
+        {
+            CategoryWindow window = container.Resolve<CategoryWindow>(new ResolverOverride[]
+                                   {
+                                       new ParameterOverride("actionCode", 2)
+                                   });
+            window.Owner = (obj as Window);
+            bool result = (bool)window.ShowDialog();
+            if (result)
+            {
+                var update = (window.DataContext as CategoryWindowViewModel).DataFormCategory;
+                var current = DataFormCategories.Where(s => s.CategoryId == update.CategoryId).FirstOrDefault();
+                if (current != null)
+                {
+                    current.CategoryName = update.CategoryName;
+                    current.Description = update.Description;
+                }
+           }
         }
 
         private bool CanRemoveSubCategoryCommandExecute(object arg)
@@ -689,7 +754,21 @@ namespace SSS.DataFormManager.ViewModels
 
         private void RemoveCategoryCommandExecute(object obj)
         {
-            throw new NotImplementedException();
+            CategoryWindow window = container.Resolve<CategoryWindow>(new ResolverOverride[]
+                                   {
+                                       new ParameterOverride("actionCode", 3)
+                                   });
+            window.Owner = (obj as Window);
+            bool result = (bool)window.ShowDialog();
+            if (result)
+            {
+                var removedCategory = (window.DataContext as CategoryWindowViewModel).DataFormCategory;
+                var current = DataFormCategories.Where(s => s.CategoryId == removedCategory.CategoryId).FirstOrDefault();
+                if (current != null)
+                {
+                    DataFormCategories.Remove(current);
+                }
+            }
         }
 
         private bool CanAddCategoryCommandExecute(object arg)
@@ -699,7 +778,17 @@ namespace SSS.DataFormManager.ViewModels
 
         private void AddCategoryCommandExecute(object obj)
         {
-            throw new NotImplementedException();
+            CategoryWindow window = container.Resolve<CategoryWindow>(new ResolverOverride[]
+                                   {
+                                       new ParameterOverride("actionCode", 1)
+                                   });
+            window.Owner = (obj as Window);
+            bool result = (bool)window.ShowDialog();
+            if (result)
+            {
+                var category = (window.DataContext as CategoryWindowViewModel).DataFormCategory;
+                DataFormCategories.Add(category);
+            }
         }
 
         private bool CanRemoveFormTypeCommandExecute(object arg)

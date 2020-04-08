@@ -3,13 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SSS.DataFormManager.Views.Windows"
-                xmlns:draggablePopup="clr-namespace:SSS.DataFormManager.Views.Controls.CustomControls.DraggablePopupCustomControl"
         xmlns:collectionControl="clr-namespace:SSS.DataFormManager.Views.Controls.CustomControls.CollectionCustomControl"
+        xmlns:converters="clr-namespace:SSS.DataFormManager.Views.Converters"
         mc:Ignorable="d"
         FontFamily="Calibri"
         FontSize="11"
         Title="Properties Window" Height="300" Width="500" x:Name="PropWindow">
+    <Window.Resources>
+        <converters:NewItemTypesComboBoxConverter x:Key="NewItemTypesComboBoxConverter" />
+    </Window.Resources>
     <Grid>
         <Border BorderThickness="1" Margin="5" BorderBrush="LightGray" Background="White">
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

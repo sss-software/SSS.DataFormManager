@@ -2,9 +2,9 @@
 
 namespace SSS.DataFormManager.DAL.Models
 {
-    public class SynchronizationRegister
+    public class SynchronizationRegistry
     {
-        public long Id { get; set; }
+        public long SynchronizationRegistryId { get; set; }
         public string LocalId { get; set; }
         public string CloudId { get; set; }
         public string ResourceHeader { get; set; }
